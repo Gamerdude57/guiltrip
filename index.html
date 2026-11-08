@@ -1,0 +1,119 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>GuiltTrip.com - Stop Waiting</title>
+    <style>
+        body {
+            font-family: 'Courier New', Courier, monospace;
+            background-color: #f3f3f3;
+            color: #333;
+            text-align: center;
+            padding: 50px;
+        }
+        .container {
+            max-width: 500px;
+            margin: 0 auto;
+            background: white;
+            padding: 30px;
+            border: 3px solid #000;
+            box-shadow: 10px 10px 0px #000;
+        }
+        .product-image {
+            font-size: 80px;
+            margin: 20px 0;
+        }
+        .price {
+            font-size: 40px;
+            color: #d9534f;
+            font-weight: bold;
+            margin: 20px 0;
+        }
+        .guilt-msg {
+            font-style: italic;
+            min-height: 50px;
+            color: #555;
+            padding: 10px;
+            border-left: 4px solid #d9534f;
+            background: #fff5f5;
+            margin: 20px 0;
+        }
+        button {
+            background: #000;
+            color: #fff;
+            border: none;
+            padding: 15px 30px;
+            font-size: 18px;
+            cursor: pointer;
+            font-weight: bold;
+        }
+        button:hover {
+            background: #d9534f;
+        }
+    </style>
+</head>
+<body>
+
+<div class="container">
+    <h1>GuiltTrip.com</h1>
+    <p>The longer you wait, the less we make.</p>
+    
+    <div class="product-image">🧸</div>
+    <h2>Handmade Artisan Teddy Bear</h2>
+    <p>Lovingly stitched by hand over 48 grueling hours.</p>
+
+    <!-- The live falling price -->
+    <div class="price">Price: $<span id="price-display">49.99</span></div>
+
+    <!-- The guilt message that changes based on price -->
+    <div id="guilt-box" class="guilt-msg">"We hope to break even today so we can fix our heater."</div>
+
+    <button onclick="checkout()">Buy Now & Ruin a Life</button>
+</div>
+
+<script>
+    let price = 49.99;
+    const priceDisplay = document.getElementById('price-display');
+    const guiltBox = document.getElementById('guilt-box');
+
+    const phrases = [
+        { limit: 40, msg: `"Okay, a small discount is fine. We can do without dessert this week."` },
+        { limit: 30, msg: `"Please press buy. The electricity bill is due in ten minutes."` },
+        { limit: 20, msg: `"Wow. You're really just watching it drop, aren't you? Cold-blooded."` },
+        { limit: 10, msg: `"The yarn alone cost us $12. You are actively taking food from our mouths."` },
+        { limit: 2, msg: `"Fine. Take it for pennies. We will just sleep in our coats. Don't worry about us."` },
+        { limit: 1, msg: `"PLEASE BUY WE NEED MONEY!!!! MY KIDS DON'T EVEN REMEMBER WHAT BREAD TASTES LIKE!"` },
+        { limit: 0.10, msg: `"Wow. You really sat there and watched the price drop to pocket lint. Congratulations, you broke me. I'm liquidating the company, selling my car for three boxes of stale toaster pastries, and dedicating the rest of my miserable adult life to becoming a full-time professional unicycle rider in a local clown troupe. Enjoy the cheap bear, you MONSTER"` }
+    ];
+
+    // Tick the price down every 1 second
+    const interval = setInterval(() => {
+        if (price > 0.05) {
+            price -= 0.15; // Drops by 15 cents every tick
+            if (price < 0.05) price = 0.05; // Cap at 5 cents
+            
+            priceDisplay.innerText = price.toFixed(2);
+            updateGuiltMessage(price);
+        } else {
+            clearInterval(interval);
+        }
+    }, 1000);
+
+    function updateGuiltMessage(currentPrice) {
+        // Find the matching phrase based on how low the price is
+        for (let phrase of phrases) {
+            if (currentPrice > phrase.limit) {
+                guiltBox.innerText = phrase.msg;
+                break;
+            }
+        }
+    }
+
+    function checkout() {
+        alert(`Transaction Failed:\nOur system blocked your payment because our server detected a massive lack of empathy. Please refresh and try paying full price.`);
+    }
+</script>
+
+</body>
+</html>
